@@ -1,15 +1,21 @@
 import { useState } from "react";
 
+let globalID = 0;
+
 function App() {
-  const [todos, setTodos] = useState(["Sarthak", "Aryan", "Mudit"]);
+  const [todos, setTodos] = useState([]);
   const [task, setTask] = useState("");
 
   function createTodo(e) {
     e.preventDefault();
     setTodos((oldTodos) => {
       setTask(""); // to clear the field after creation
-      return [...oldTodos, task];
+      return [...oldTodos, { todo: task, id: globalID++ }];
     });
+  }
+
+  function deleteItem(itemID) {
+    setTodos((oldTodos) => oldTodos.filter((item) => item.id !== itemID));
   }
 
   return (
@@ -30,8 +36,16 @@ function App() {
         </form>
 
         <ul>
-          {todos.map((todo) => {
-            return <li>{todo}</li>;
+          {todos.map((item) => {
+            return (
+              <div className="task">
+                <li>
+                  ({item.id})&nbsp; {item.todo} {""} &nbsp;
+                  <button onClick={() => deleteItem(item.id)}>Remove</button>
+                </li>
+                <br />
+              </div>
+            );
           })}
         </ul>
       </div>
