@@ -4,17 +4,12 @@ function App() {
   const [todos, setTodos] = useState(["Sarthak", "Aryan", "Mudit"]);
   const [task, setTask] = useState("");
 
-  function createTodo() {
+  function createTodo(e) {
+    e.preventDefault();
     setTodos((oldTodos) => {
       setTask(""); // to clear the field after creation
       return [...oldTodos, task];
     });
-  }
-
-  function detectEnter(event) {
-    if (event.keyCode === 13) {
-      createTodo();
-    }
   }
 
   return (
@@ -23,15 +18,16 @@ function App() {
         <h1>Ugliest Todo List Ever</h1>
       </div>
       <div className="inputTodo">
-        <input
-          onKeyDown={detectEnter}
-          type="text"
-          value={task}
-          onChange={(event) => {
-            setTask(event.target.value);
-          }}
-        />
-        <button onClick={createTodo}>Create</button>
+        <form onSubmit={createTodo}>
+          <input
+            type="text"
+            value={task}
+            onChange={(event) => {
+              setTask(event.target.value);
+            }}
+          />
+          <button type="submit">Create</button>
+        </form>
 
         <ul>
           {todos.map((todo) => {
